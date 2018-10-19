@@ -14,7 +14,7 @@ public class MemberDao {
 		PreparedStatement st = null;
 		ResultSet rs=null;
 		Context init=new InitialContext();
-		DataSource ds=(DataSource)init.lookup("/jdbc/mall");
+		DataSource ds=(DataSource)init.lookup("java:comp/env/jdbc/mall");
 		myconn=ds.getConnection();
 		st = myconn.prepareStatement("select * from member");
 		rs = st.executeQuery();
