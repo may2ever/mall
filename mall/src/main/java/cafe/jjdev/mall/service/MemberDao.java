@@ -3,31 +3,52 @@ package cafe.jjdev.mall.service;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
+import java.sql.SQLException;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 public class MemberDao {
-	public int insertMember(Member member) throws Exception{
-		Connection myconn=null;
-		PreparedStatement st = null;
-		ResultSet rs=null;
-		Context init=new InitialContext();
-		DataSource ds=(DataSource)init.lookup("java:comp/env/jdbc/mall");
-		myconn=ds.getConnection();
-		st = myconn.prepareStatement("select * from member");
-		rs = st.executeQuery();
-		rs.next();
-		member.setNo(rs.getInt(1));
-		member.setId(rs.getString(2));
-		member.setPw(rs.getString(3));
-		member.setLevel(rs.getInt(4));
-
-		
-		rs.close();
-		st.close();
-		myconn.close();
-		return 0;
+	//객체 종료를 위한 공통메서드
+    private void close(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet) {
+        if(resultSet != null) {
+            try {resultSet.close();} catch(Exception exception){exception.printStackTrace();}
+        }
+        if(preparedStatement != null) {
+            try {preparedStatement.close();} catch(Exception exception){exception.printStackTrace();}
+        }
+        if(connection != null) {
+            try {connection.close();} catch(Exception exception){exception.printStackTrace();}
+        }
+    }
+    //데이터베이스 연결을 위한 공통메서드
+    private Connection getConnection() throws SQLException, NamingException {
+    	Connection connection = null;
+		Context initContext = new InitialContext();
+		DataSource dataSource = (DataSource)initContext.lookup("java:comp/env/jdbc/mall");
+		connection = dataSource.getConnection();
+		return connection;
+    }
+	public int insertMember(Member member) {
+		Connection connection=null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet=null;
+		int rows = 0;
+		try {
+			connection = getConnection();
+			preparedStatement = connection.prepareStatement("insert into member(id,pw,level) values(?,?,?)");
+			preparedStatement.setString(1, member.getId());
+			preparedStatement.setString(2, member.getPw());
+			preparedStatement.setInt(3, member.getLevel());
+			rows = preparedStatement.executeUpdate();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			this.close(connection,preparedStatement ,resultSet);
+		}
+		return rows;
 	}
 }
