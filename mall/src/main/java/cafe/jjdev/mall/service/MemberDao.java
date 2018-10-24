@@ -10,7 +10,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 public class MemberDao {
-	//객체 종료를 위한 공통메서드
+	//객체 종료를 위한 공통사용 코드 메서드화
     private void close(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet) {
         if(resultSet != null) {
             try {resultSet.close();} catch(Exception exception){exception.printStackTrace();}
@@ -22,7 +22,7 @@ public class MemberDao {
             try {connection.close();} catch(Exception exception){exception.printStackTrace();}
         }
     }
-    //데이터베이스 연결을 위한 공통메서드
+    //데이터베이스 연결을 위한 공통사용 코드 메서드화
     private Connection getConnection() throws SQLException, NamingException {
     	Connection connection = null;
 		Context initContext = new InitialContext();
@@ -51,4 +51,5 @@ public class MemberDao {
 		}
 		return rows;
 	}
+
 }
