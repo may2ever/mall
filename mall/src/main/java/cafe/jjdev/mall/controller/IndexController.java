@@ -3,7 +3,6 @@ package cafe.jjdev.mall.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -39,12 +38,12 @@ public class IndexController extends HttpServlet {
 		list.add("½Â¿ì");
 		list.add("Âù¿ì");
 		request.setAttribute("list", list); // ${list}
-		RequestDispatcher dispatch = request.getRequestDispatcher("/WEB-INF/jsp/index.jsp");
-		dispatch.forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/index.jsp").forward(request, response);
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		
 	}
 
 }
