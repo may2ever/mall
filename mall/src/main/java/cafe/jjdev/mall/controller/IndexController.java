@@ -14,19 +14,17 @@ import cafe.jjdev.mall.service.Member;
 @WebServlet("/index")
 public class IndexController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
     public IndexController() {
         super();
-        // TODO Auto-generated constructor stub
     }
-
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//1. router @WebServlet("/index")
 		//2. model호출 :DAO모델 생성
 		//view rend... (template)
 		//forward(request,response) to WEB-INF/jsp/index.jsp
-		
+		System.out.println("call");
 		Member member = new Member();
 		
 		request.setAttribute("model", "hello world");

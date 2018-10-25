@@ -51,5 +51,29 @@ public class MemberDao {
 		}
 		return rows;
 	}
-
+	//id와 pw값을 가지는 member객체를 이용해 로그인체크를 하는 메서드
+	//데이터베이스에서 id와pw일치시 success = true 리턴
+	public boolean login(Member member) {
+		Connection connection=null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet=null;
+		boolean success = false;
+		try {
+			connection = getConnection();
+			preparedStatement = connection.prepareStatement("SELECT id from member where id = ? and pw = ?");
+			preparedStatement.setString(1, member.getId());
+			preparedStatement.setString(2, member.getPw());
+			resultSet = preparedStatement.executeQuery();
+			if(resultSet.next()) {
+				success = true;
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			this.close(connection, preparedStatement, resultSet);
+		}		
+		return success;
+	}
 }

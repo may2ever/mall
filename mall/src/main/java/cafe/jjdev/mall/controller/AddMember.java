@@ -19,11 +19,13 @@ import cafe.jjdev.mall.service.Member;
 import cafe.jjdev.mall.service.MemberDao;
 @WebServlet("/AddMember")
 public class AddMember extends HttpServlet{
+
+	private static final long serialVersionUID = 1L;
 	MemberDao memberDao;
 	//회원가입 폼
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("WEB-INF/jsp/addMember.jsp");
+		request.getRequestDispatcher("WEB-INF/jsp/addMember.jsp").forward(request, response);
 	}
 	//회원가입 액션
 	@Override
@@ -36,6 +38,6 @@ public class AddMember extends HttpServlet{
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		response.sendRedirect(request.getContextPath()+"/WEB-INF/");
+		response.sendRedirect(request.getContextPath()+"/WEB-INF/jsp/index.jsp");
 	}
 }
